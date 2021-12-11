@@ -1,5 +1,19 @@
 const express = require('express')
+const mongoose = require('mongoose')
+
 const app = express()
+
+mongoose.connect('mongodb://localhost/url-shortener')
+// get database connection
+const db = mongoose.connection
+// if error
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+// if success
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
 
 const port = 3000
 
