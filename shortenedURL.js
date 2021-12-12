@@ -4,14 +4,14 @@ function sample(array) {
 }
 
 function generateShortURL() {
-  const lettersAndNumbers = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+  const BASE62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
   let shortenedURL = ''
   for (let i = 0; i < 5; i++) {
-    shortenedURL += sample(lettersAndNumbers)
+    shortenedURL += sample(BASE62)
   }
 
-  return `https://0BshortURL.com/${shortenedURL}`
+  return shortenedURL
 }
 
-module.exports = generateShortURL
+module.exports = generateShortURL()
