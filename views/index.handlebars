@@ -1,7 +1,14 @@
 {{#if shortURL}}
 <h3>Success! Please use this link:</h3>
 <p id="generatedURL">{{origin}}/{{shortURL}}</p>
-<button>Copy</button>
+<button onclick="copy()">Copy</button>
+<script>
+  function copy() {
+    let copyText = document.getElementById('generatedURL')
+    navigator.clipboard.writeText(copyText.innerText)
+    alert("Copied the url: " + copyText.innerText)
+  }
+</script>
 {{else}}
 <form action="/" method="POST">
   <div>
