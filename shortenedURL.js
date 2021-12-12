@@ -11,7 +11,7 @@ function generateShortURL() {
     shortenedURL += sample(lettersAndNumbers)
   }
 
-  return shortenedURL
+  return `https://0BshortURL.com/${shortenedURL}`
 }
 
 module.exports = generateShortURL
