@@ -3,15 +3,13 @@ function sample(array) {
   return array[index]
 }
 
-function generateShortURL() {
+module.exports = function generateShortURL(URLLength) {
   const BASE62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
   let shortenedURL = ''
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < URLLength; i++) {
     shortenedURL += sample(BASE62)
   }
 
   return shortenedURL
 }
-
-module.exports = generateShortURL()

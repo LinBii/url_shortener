@@ -1,7 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
 const URL = require('./models/url')
 const generateShortURL = require('./shortenedURL')
 
@@ -10,7 +9,7 @@ const app = express()
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 mongoose.connect('mongodb://localhost/url-shortener')
 // get database connection
@@ -30,6 +29,13 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
+// app.get('/:shortURL', (req, res) => {
+//   const shortURL = req.params.shortURL
+//   return URL.findById(shortURL)
+//     .lean()
+//     .then(res.redirect(shortURL))
+// })
+
 // submit
 // check if it is the same url 
 // if the same, then fetch data from database
@@ -37,9 +43,10 @@ app.get('/', (req, res) => {
 // if not, generate new short url
 app.post('/', (req, res) => {
   const originalURL = req.body.url
-  const shortURL = generateShortURL(req.body)
-  return URL.create({ originalURL, shortURL })
-    .then(() => res.redirect('/'))
+  return URL.create({ originalURL, shortURL: generateShortURL(5) })
+    .then(() => {
+      res.redirect('/')
+    })
     .catch(error => console.log(error))
 })
 
