@@ -29,12 +29,12 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
-// app.get('/:shortURL', (req, res) => {
-//   const shortURL = req.params.shortURL
-//   return URL.findById(shortURL)
-//     .lean()
-//     .then(res.redirect(shortURL))
-// })
+app.get('/:shortURL', (req, res) => {
+  const shortURL = req.params
+  return URL.findOne(shortURL)
+    .then(data => res.redirect(data.originalURL))
+    .catch(error => console.log(error))
+})
 
 // submit
 // check if it is the same url 
@@ -43,9 +43,13 @@ app.get('/', (req, res) => {
 // if not, generate new short url
 app.post('/', (req, res) => {
   const originalURL = req.body.url
-  return URL.create({ originalURL, shortURL: generateShortURL(5) })
-    .then(() => {
-      res.redirect('/')
+  const shortURL = generateShortURL(5)
+  return URL.create({ originalURL, shortURL })
+    .then(data => {
+      res.render('index', {
+        origin: req.headers.origin,
+        shortURL: data.shortURL
+      })
     })
     .catch(error => console.log(error))
 })
