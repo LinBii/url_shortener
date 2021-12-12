@@ -37,20 +37,20 @@ app.get('/:shortURL', (req, res) => {
 })
 
 // submit
-// check if it is the same url 
-// if the same, then fetch data from database
-
-// if not, generate new short url
 app.post('/', (req, res) => {
   const originalURL = req.body.url
   const shortURL = generateShortURL(5)
-  return URL.create({ originalURL, shortURL })
-    .then(data => {
+  // check if it is the same url
+  // 輸入相同網址時，產生一樣的縮址
+  URL.findOne({ originalURL })
+    .then(data =>
+      data ? data : URL.create({ originalURL, shortURL }))
+    .then(data => 
       res.render('index', {
         origin: req.headers.origin,
-        shortURL: data.shortURL
+        shortURL: data.shortURL,
       })
-    })
+    )
     .catch(error => console.log(error))
 })
 
