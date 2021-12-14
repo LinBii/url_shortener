@@ -20,10 +20,15 @@ router.post('/', (req, res) => {
   const originalURL = req.body.url
   const shortURL = generateShortURL(5)
   // check if it is the same url
-  // 輸入相同網址時，產生一樣的縮址
   URL.findOne({ originalURL })
-    .then(data =>
-      data ? data : URL.create({ originalURL, shortURL }))
+    .then(data => {
+      // 輸入相同網址時，產生一樣的縮址
+      if (data) {
+        return data
+      } else {
+        return URL.create({ originalURL, shortURL })
+      }
+    })
     .then(data =>
       res.render('index', {
         origin: req.headers.origin,
